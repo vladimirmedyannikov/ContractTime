@@ -3,10 +3,7 @@ package ru.medyannikov.dao;
 import ru.medyannikov.dao.factory.FirebirdDAOFactory;
 import ru.medyannikov.model.Department;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -17,6 +14,7 @@ import java.util.logging.Logger;
 public class DepartmentDAO implements DAO<Department> {
     private DAOFactory daoFactory = new FirebirdDAOFactory();
     private static Logger Log = Logger.getLogger(DepartmentDAO.class.getName());
+    private static List<Department> departmentList = new ArrayList<>();
 
     @Override
     public Department insert(Department department) {
@@ -33,9 +31,51 @@ public class DepartmentDAO implements DAO<Department> {
 
     }
 
+    public DepartmentDAO() {
+        try {
+            departmentList = getAll();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    public Department getById(int id) {
+    public Department getById(int id) throws DAOException {
+
+        /*Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String sql = "select DEPT_ID, DEPT_NAME from Depts where DEPT_ID = ?;";
+        Department department = new Department();
+        try{
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                department.setIdDepartment(resultSet.getInt(1));
+                department.setNameDepartment(resultSet.getString(2));
+            }
+        }
+        catch (Exception e){
+            throw new DAOException("Department getById "+ id, e);
+        }
+        finally {
+            try{
+                resultSet.close();
+                connection.close();
+                statement.close();
+            }
+            catch (SQLException e){
+                throw new DAOException("SQL Department getById "+id,e);
+            }
+        }
+        */
+        for(Department d: departmentList){
+            if (d.getIdDepartment() == id) return d;
+        }
         return null;
+        //return department;
     }
 
     @Override
@@ -43,9 +83,8 @@ public class DepartmentDAO implements DAO<Department> {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-
-        String sql = "select DEPT_ID, DEPT_NAME from Depts";
-        List<Department> departmentList = new ArrayList<>();
+        String sql = "select DEPT_ID, DEPT_NAME from Depts order by DEPT_ID";
+        departmentList = new ArrayList<>();
         try {
             connection = daoFactory.getConnection();
             statement = connection.createStatement();
@@ -53,9 +92,10 @@ public class DepartmentDAO implements DAO<Department> {
             while(resultSet.next())
             {
                 Department dep = new Department();
-                dep.setNameDepartment(resultSet.getString(1));
-                dep.setIdDepartment(resultSet.getInt(0));
+                dep.setNameDepartment(resultSet.getString(2));
+                dep.setIdDepartment(resultSet.getInt(1));
                 departmentList.add(dep);
+                //System.out.println(resultSet.getInt(1) + " | " + resultSet.getString(2));
             }
         }
         catch (Exception e){
@@ -70,6 +110,6 @@ public class DepartmentDAO implements DAO<Department> {
                 e.printStackTrace();
             }
         }
-        return null;
+        return departmentList;
     }
 }

@@ -1,6 +1,8 @@
 package ru.medyannikov.view;
 
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ru.medyannikov.application.Main;
 import javafx.beans.value.ObservableValue;
@@ -8,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import ru.medyannikov.dao.DAOException;
+import ru.medyannikov.dao.UserDAO;
 import ru.medyannikov.model.User;
 
 /**
@@ -83,6 +87,12 @@ public class SampleOverviewController {
     public void setApp(Main mainApp){
         this.mainApp = mainApp;
         this.mainApp.getUsers();
-        userTableView.setItems(this.mainApp.getUsers());
+        UserDAO userDAO = new UserDAO();
+        //ObservableList<User> list = FXCollections.observableList(userDAO.getAll());
+        try {
+            userTableView.setItems(FXCollections.observableArrayList(userDAO.getAll()));
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
     }
 }

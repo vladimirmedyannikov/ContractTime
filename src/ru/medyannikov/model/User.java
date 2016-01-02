@@ -1,6 +1,7 @@
 package ru.medyannikov.model;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -15,17 +16,21 @@ import java.util.List;
 public class User {
 
     private int id;
-    private StringProperty fullName;
-    private StringProperty firstName;
-    private StringProperty secondName;
-    private StringProperty thirdName;
-    private ObjectProperty<Date> dateBirthday;
-    private ObjectProperty<Date> dateIn;
-    private ObjectProperty<Date> dateOut;
-    private StringProperty login;
-    private StringProperty password;
-    private ObjectProperty<Department> department;
-    private StringProperty email;
+    private StringProperty fullName = new SimpleStringProperty();
+    private StringProperty firstName = new SimpleStringProperty();
+    private StringProperty secondName = new SimpleStringProperty();
+    private StringProperty thirdName = new SimpleStringProperty();
+    private ObjectProperty<Date> dateBirthday = new SimpleObjectProperty<>();
+    private ObjectProperty<Date> dateIn = new SimpleObjectProperty<>();;
+    private ObjectProperty<Date> dateOut = new SimpleObjectProperty<>();;
+    private StringProperty login = new SimpleStringProperty();;
+    private StringProperty password = new SimpleStringProperty();;
+    private ObjectProperty<Department> department  = new SimpleObjectProperty<>();;
+    private StringProperty email = new SimpleStringProperty();;;
+
+    public User() {
+
+    }
 
     public String getFirstName() {
         return firstName.get();

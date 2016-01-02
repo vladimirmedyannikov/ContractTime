@@ -1,6 +1,8 @@
 package ru.medyannikov.model;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -8,9 +10,9 @@ import javafx.beans.property.StringProperty;
  */
 public class Department {
     private int idDepartment;
-    private StringProperty nameDepartment;
-    private ObjectProperty<Firm> firmDepartment;
-    private ObjectProperty<Department> parentDepartment;
+    private StringProperty nameDepartment = new SimpleStringProperty();
+    private ObjectProperty<Firm> firmDepartment = new SimpleObjectProperty<>();
+    private ObjectProperty<Department> parentDepartment = new SimpleObjectProperty<>();
 
     public int getIdDepartment() {
         return idDepartment;

@@ -10,6 +10,6 @@ public interface DAO<E> {
     public E insert(E e);
     public void delete(E e);
     public void update(E e);
-    public E getById(int id);
+    public E getById(int id) throws DAOException;
     public List<E> getAll() throws DAOException;
 }

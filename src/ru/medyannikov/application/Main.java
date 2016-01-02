@@ -8,11 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.medyannikov.dao.DepartmentDAO;
+import ru.medyannikov.dao.UserDAO;
+import ru.medyannikov.dao.UserDAO2;
 import ru.medyannikov.dao.factory.FirebirdDAOFactory;
 import ru.medyannikov.model.User;
+import ru.medyannikov.model.User2;
 import ru.medyannikov.view.SampleOverviewController;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -21,7 +25,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        initData();
+        //initData();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/sampleView.fxml"));
         Parent root = (Parent) loader.load();
@@ -35,8 +39,15 @@ public class Main extends Application {
         Connection connection = daoFactory.getConnection();
         System.out.println(connection.getClientInfo());
 
-        DepartmentDAO departmentDAO = new DepartmentDAO();
-        departmentDAO.getAll();
+       // DepartmentDAO departmentDAO = new DepartmentDAO();
+        //departmentDAO.getAll();
+
+        UserDAO userDAO = new UserDAO();
+        ObservableList<User> list = FXCollections.observableList(userDAO.getAll());
+
+        /*UserDAO userDAO2 = new UserDAO();
+        List<User> list2 = userDAO2.getAll();*/
+
     }
 
 
