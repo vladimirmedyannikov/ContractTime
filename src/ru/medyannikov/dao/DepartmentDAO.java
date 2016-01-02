@@ -5,7 +5,9 @@ import ru.medyannikov.model.Department;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -39,39 +41,34 @@ public class DepartmentDAO implements DAO<Department> {
     @Override
     public List<Department> getAll() throws DAOException {
         Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        String sql = "select DEPT_ID, DEPT_NAME from Depts";
+        List<Department> departmentList = new ArrayList<>();
         try {
-            // Создаём класс, с помощью которого будут выполняться
-            // SQL запросы.
             connection = daoFactory.getConnection();
-            Statement stmt = connection.createStatement();
-
-            //Выполняем SQL запрос.
-            ResultSet rs = stmt.executeQuery("select * from Depts");
-
-            // Смотрим количество колонок в результате SQL запроса.
-            int nColumnsCount = rs.getMetaData().getColumnCount();
-
-            // Выводим результат.
-            while(rs.next())
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while(resultSet.next())
             {
-                System.out.println();
-                for (int n=1;n < nColumnsCount+1;n++)
-                {
-                    Object obj = rs.getObject(n);
-                    if (obj!=null)
-                    {
-                        System.out.print(obj+" | ");
-                    }
-                }
+                Department dep = new Department();
+                dep.setNameDepartment(resultSet.getString(1));
+                dep.setIdDepartment(resultSet.getInt(0));
+                departmentList.add(dep);
             }
-
-            // Освобождаем ресурсы.
-            stmt.close();
-
-            connection.close();
         }
         catch (Exception e){
             throw new DAOException("getListDepartment", e);
+        }
+        finally {
+            try {
+                resultSet.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
