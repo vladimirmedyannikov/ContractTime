@@ -11,5 +11,5 @@ public interface DAO<E> {
     public void delete(E e);
     public void update(E e);
     public E getById(int id);
-    public List<E> getAll();
+    public List<E> getAll() throws DAOException;
 }

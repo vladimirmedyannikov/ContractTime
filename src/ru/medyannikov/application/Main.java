@@ -7,8 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.medyannikov.dao.DepartmentDAO;
+import ru.medyannikov.dao.factory.FirebirdDAOFactory;
 import ru.medyannikov.model.User;
 import ru.medyannikov.view.SampleOverviewController;
+
+import java.sql.Connection;
 
 public class Main extends Application {
 
@@ -27,7 +31,12 @@ public class Main extends Application {
 
         SampleOverviewController controller = loader.getController();
         controller.setApp(this);
+        FirebirdDAOFactory daoFactory = new FirebirdDAOFactory();
+        Connection connection = daoFactory.getConnection();
+        System.out.println(connection.getClientInfo());
 
+        DepartmentDAO departmentDAO = new DepartmentDAO();
+        departmentDAO.getAll();
     }
 
 
