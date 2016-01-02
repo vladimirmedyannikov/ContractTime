@@ -37,7 +37,7 @@ public class Main extends Application {
     }
 
     private void initData(){
-        for (int i=0; i < 10; i++){
+        for (int i=0; i < 500; i++){
             listUser.add(new User(i, "Name "+i,"email@" + i +"list.ru"));
         }
     }
