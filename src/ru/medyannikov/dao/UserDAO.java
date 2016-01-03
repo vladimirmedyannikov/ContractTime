@@ -48,7 +48,9 @@ public class UserDAO implements DAO<User> {
             while(resultSet.next()){
                 user = new User();
                 user.setId(resultSet.getInt(1));
-                user.setFullName(resultSet.getString(5));
+                user.setFirstName(resultSet.getString("f_name"));
+                user.setSecondName(resultSet.getString("l_name"));
+                user.setThirdName(resultSet.getString("p_name"));
 
                 Department department = new Department();//departmentDAO.getById(resultSet.getInt(2));
                 department.setIdDepartment(resultSet.getInt("dept_id"));

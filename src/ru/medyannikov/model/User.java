@@ -173,7 +173,7 @@ public class User {
     }
 
     public StringProperty fullNameProperty() {
-        return fullName;
+        return new SimpleStringProperty(getFirstName() + " " + getSecondName() + " " + getThirdName());
     }
 
     public void setFullName(String fullName) {
