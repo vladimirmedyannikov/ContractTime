@@ -34,9 +34,9 @@ public class FirebirdDAOFactory extends DAOFactory {
     public Connection getConnection() throws DAOException {
         Connection connection = null;
         try {
-            Class.forName("org.firebirdsql.jdbc.FBDriver");
+            Class.forName("org.firebirdsql.jdbc.FBDriver").newInstance();
             connection = DriverManager.getConnection(
-                    "jdbc:firebirdsql://localhost:3050/ContractTime",
+                    "jdbc:firebirdsql://192.168.0.105:3050/ContractTime?lc_ctype=WIN1251",
                     "SYSDBA", "masterkey");
         }
         catch (Exception e){
