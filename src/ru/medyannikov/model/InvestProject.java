@@ -1,6 +1,8 @@
 package ru.medyannikov.model;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.Date;
@@ -10,15 +12,15 @@ import java.util.Date;
  */
 public class InvestProject {
     private int idProject;
-    private StringProperty nameProject;
-    private StringProperty numberProject;
-    private ObjectProperty<Department> department;
-    private ObjectProperty<User> user;
-    private ObjectProperty<Date> dateBegin;
-    private ObjectProperty<Date> dateEnd;
-    private ObjectProperty<Date> dateBeginProg;
-    private ObjectProperty<Date> dateEndProg;
-    private StringProperty aboutProject;
+    private StringProperty nameProject = new SimpleStringProperty();;
+    private StringProperty numberProject = new SimpleStringProperty();;
+    private ObjectProperty<Department> department = new SimpleObjectProperty<>();
+    private ObjectProperty<User> user = new SimpleObjectProperty<>();
+    private ObjectProperty<Date> dateBegin = new SimpleObjectProperty<>();
+    private ObjectProperty<Date> dateEnd = new SimpleObjectProperty<>();
+    private ObjectProperty<Date> dateBeginProg = new SimpleObjectProperty<>();
+    private ObjectProperty<Date> dateEndProg = new SimpleObjectProperty<>();
+    private StringProperty aboutProject = new SimpleStringProperty();;
 
     public int getIdProject() {
         return idProject;

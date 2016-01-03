@@ -16,17 +16,18 @@ import java.util.List;
 public class User {
 
     private int id;
+
     private StringProperty fullName = new SimpleStringProperty();
     private StringProperty firstName = new SimpleStringProperty();
     private StringProperty secondName = new SimpleStringProperty();
     private StringProperty thirdName = new SimpleStringProperty();
     private ObjectProperty<Date> dateBirthday = new SimpleObjectProperty<>();
-    private ObjectProperty<Date> dateIn = new SimpleObjectProperty<>();;
-    private ObjectProperty<Date> dateOut = new SimpleObjectProperty<>();;
-    private StringProperty login = new SimpleStringProperty();;
-    private StringProperty password = new SimpleStringProperty();;
-    private ObjectProperty<Department> department  = new SimpleObjectProperty<>();;
-    private StringProperty email = new SimpleStringProperty();;;
+    private ObjectProperty<Date> dateIn = new SimpleObjectProperty<>();
+    private ObjectProperty<Date> dateOut = new SimpleObjectProperty<>();
+    private StringProperty login = new SimpleStringProperty();
+    private StringProperty password = new SimpleStringProperty();
+    private ObjectProperty<Department> department  = new SimpleObjectProperty<>();
+    private StringProperty email = new SimpleStringProperty();
 
     public User() {
 

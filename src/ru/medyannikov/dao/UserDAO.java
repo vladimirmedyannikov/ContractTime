@@ -4,10 +4,7 @@ import ru.medyannikov.dao.factory.FirebirdDAOFactory;
 import ru.medyannikov.model.Department;
 import ru.medyannikov.model.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,8 +32,45 @@ public class UserDAO implements DAO<User> {
     }
 
     @Override
-    public User getById(int id) {
-        return null;
+    public User getById(int id) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        DepartmentDAO departmentDAO = new DepartmentDAO();
+        String sql = "Select id_user, id_dept, u.date_in, u.date_out, l_name, f_name, p_name, login, e_mail, sent_message, sent_date, dept_name, dept_id from user_info u " +
+                " left join depts on depts.dept_id = u.id_dept where id_user = ?";
+        User user = null;
+        try{
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                user = new User();
+                user.setId(resultSet.getInt(1));
+                user.setFullName(resultSet.getString(5));
+
+                Department department = new Department();//departmentDAO.getById(resultSet.getInt(2));
+                department.setIdDepartment(resultSet.getInt("dept_id"));
+                department.setNameDepartment(resultSet.getString("dept_name"));
+                user.setDepartment(department);
+            }
+        }
+        catch (Exception e){
+            throw new DAOException("getAll User", e);
+        }
+        finally {
+            try{
+                resultSet.close();
+                connection.close();
+                statement.close();
+            }
+            catch (SQLException e){
+                throw new DAOException("User getAll",e);
+            }
+        }
+        return user;
+
     }
 
     @Override
@@ -45,7 +79,8 @@ public class UserDAO implements DAO<User> {
         Statement statement = null;
         ResultSet resultSet = null;
         DepartmentDAO departmentDAO = new DepartmentDAO();
-        String sql = "Select id_user, id_dept, date_in, date_out, l_name, f_name, p_name, login, e_mail, sent_message, sent_date from user_info";
+        String sql = "Select id_user, id_dept, u.date_in, u.date_out, l_name, f_name, p_name, login, e_mail, sent_message, sent_date, dept_name, dept_id from user_info u " +
+                " left join depts on depts.dept_id = u.id_dept";
         List<User> userList = new ArrayList<User>();
 
         try{
@@ -56,11 +91,13 @@ public class UserDAO implements DAO<User> {
                 User user = new User();
                 user.setId(resultSet.getInt(1));
                 user.setFullName(resultSet.getString(5));
-                Department department = departmentDAO.getById(resultSet.getInt(2));
+
+                Department department = new Department();//departmentDAO.getById(resultSet.getInt(2));
+                department.setIdDepartment(resultSet.getInt("dept_id"));
+                department.setNameDepartment(resultSet.getString("dept_name"));
                 user.setDepartment(department);
                 userList.add(user);
             }
-
         }
         catch (Exception e){
             throw new DAOException("getAll User", e);
