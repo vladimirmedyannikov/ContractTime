@@ -4,16 +4,20 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import ru.medyannikov.dao.DAOException;
+import ru.medyannikov.dao.StageProjectDAO;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Vladimir on 02.01.2016.
  */
 public class InvestProject {
     private int idProject;
-    private StringProperty nameProject = new SimpleStringProperty();;
-    private StringProperty numberProject = new SimpleStringProperty();;
+    private StringProperty nameProject = new SimpleStringProperty();
+    private StringProperty numberProject = new SimpleStringProperty();
     private ObjectProperty<Department> department = new SimpleObjectProperty<>();
     private ObjectProperty<User> user = new SimpleObjectProperty<>();
     private ObjectProperty<Date> dateBegin = new SimpleObjectProperty<>();
@@ -21,6 +25,19 @@ public class InvestProject {
     private ObjectProperty<Date> dateBeginProg = new SimpleObjectProperty<>();
     private ObjectProperty<Date> dateEndProg = new SimpleObjectProperty<>();
     private StringProperty aboutProject = new SimpleStringProperty();;
+    private List<StageProject> projectList;
+
+    public List<StageProject> getProjectList() throws DAOException {
+        if (projectList == null){
+            StageProjectDAO dao = new StageProjectDAO();
+            projectList = dao.getByProject(getIdProject());
+        }
+        return projectList;
+    }
+
+    public void setProjectList(List<StageProject> projectList) {
+        this.projectList = projectList;
+    }
 
     public int getIdProject() {
         return idProject;

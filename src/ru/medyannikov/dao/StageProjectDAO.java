@@ -40,16 +40,16 @@ public class StageProjectDAO implements DAO<StageProject> {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        String sql = "select id_stage, id_project, name_stage, id_user, l_name, f_name, p_name, date_begin_plan, " +
+        String sql = "select id_stage, id_project, name_stage, u.id_user, l_name, f_name, p_name, date_begin_plan, " +
                 "date_end_plan, date_begin_prog, date_end_prog, date_begin_user, date_end_user, " +
                 "status_stage, comment_user from stage_project " +
-                "left join user_info u on u.user_id = stage_project.id_user where id_project = ?;";
+                "left join user_info u on u.id_user = stage_project.id_user where id_project = ?;";
         List<StageProject> stageProjectList = new ArrayList<>();
         try{
             connection = daoFactory.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setInt(1, idProject);
-            resultSet = statement.executeQuery(sql);
+            resultSet = statement.executeQuery();
             while (resultSet.next()){
                 StageProject stageProject = generateStageProject(resultSet);
                 stageProjectList.add(stageProject);
