@@ -1,12 +1,20 @@
-package ru.medyannikov.control;
+package ru.medyannikov.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import ru.medyannikov.application.Main;
 import ru.medyannikov.dao.DAOException;
@@ -14,6 +22,8 @@ import ru.medyannikov.dao.InvestProjectDAO;
 import ru.medyannikov.dao.UserDAO;
 import ru.medyannikov.model.InvestProject;
 import ru.medyannikov.model.StageProject;
+
+import java.io.IOException;
 
 /**
  * Created by Vladimir on 03.01.2016.
@@ -63,6 +73,9 @@ public class InvestProjectFormController {
     private TableColumn<StageProject, String> stageProjectStatus;
     @FXML
     private TableColumn<StageProject, String> stageProjectCommentUser;
+
+    @FXML
+    private Button buttonOpen;
 
 
     public InvestProjectFormController() {
@@ -222,5 +235,18 @@ public class InvestProjectFormController {
         } catch (DAOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void dialogIvestProject(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
+        Parent root = (Parent) loader.load();
+        stage.setScene(new Scene(root));
+        stage.setTitle("My modal window");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)event.getSource()).getScene().getWindow() );
+        stage.show();
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.medyannikov.control.InvestProjectFormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.medyannikov.view.InvestProjectFormController">
    <children>
       <Pane prefHeight="25.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -72,5 +72,6 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <Button layoutY="480.0" mnemonicParsing="false" onAction="#dialogIvestProject" prefHeight="25.0" prefWidth="162.0" text="Button" />
    </children>
 </AnchorPane>

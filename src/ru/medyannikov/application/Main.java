@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.medyannikov.model.User;
-import ru.medyannikov.control.InvestProjectFormController;
+import ru.medyannikov.view.InvestProjectFormController;
 
 public class Main extends Application {
 

@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="ContractTime:jar">
+  <artifact type="jar" name="ContractTime:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/ContractTime_jar</output-path>
     <root id="archive" name="ContractTime.jar">
       <element id="module-output" name="ContractTime" />
