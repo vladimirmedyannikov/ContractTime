@@ -1,7 +1,9 @@
 package ru.medyannikov.dao;
 
+import javafx.scene.control.ChoiceBox;
 import ru.medyannikov.dao.factory.FirebirdDAOFactory;
 import ru.medyannikov.model.Department;
+import ru.medyannikov.util.KeyValuePair;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -39,10 +41,40 @@ public class DepartmentDAO implements DAO<Department> {
         }
     }
 
+    public List<KeyValuePair> getDepatmentComboBox() throws DAOException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        String sql = "Select dept_id, name_firm || ' ' || dept_name as dept_name from depts " +
+                "left join firm on firm.id_firm = depts.firm_id order by depts.firm_id, dept_name";
+        List<KeyValuePair> keyValuePairs = new ArrayList<>();
+        try{
+            connection = daoFactory.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                KeyValuePair keyValuePair = new KeyValuePair(resultSet.getString("dept_id"), resultSet.getString("dept_name"));
+                keyValuePairs.add(keyValuePair);
+            }
+        }catch (Exception e)
+        {
+            throw new DAOException("getDepartmentComboBox", e);
+        }
+        finally {
+            try{
+                resultSet.close();
+                statement.close();
+                connection.close();
+            }catch (SQLException e){
+                throw new DAOException("SQL getDepartmentComboBox", e);
+            }
+        }
+    return keyValuePairs;
+    }
+
     @Override
     public Department getById(int id) throws DAOException {
-
-        /*Connection connection = null;
+        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         String sql = "select DEPT_ID, DEPT_NAME from Depts where DEPT_ID = ?;";
@@ -70,10 +102,10 @@ public class DepartmentDAO implements DAO<Department> {
                 throw new DAOException("SQL Department getById "+id,e);
             }
         }
-        */
-        for(Department d: departmentList){
+
+        /*for(Department d: departmentList){
             if (d.getIdDepartment() == id) return d;
-        }
+        }*/
         return null;
         //return department;
     }

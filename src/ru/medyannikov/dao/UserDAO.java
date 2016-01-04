@@ -3,6 +3,7 @@ package ru.medyannikov.dao;
 import ru.medyannikov.dao.factory.FirebirdDAOFactory;
 import ru.medyannikov.model.Department;
 import ru.medyannikov.model.User;
+import ru.medyannikov.util.KeyValuePair;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,6 +30,36 @@ public class UserDAO implements DAO<User> {
     @Override
     public void update(User user) {
 
+    }
+
+    public List<KeyValuePair> getUserComboBox() throws DAOException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        String sql = "select id_user, l_name || ' ' || f_name || ' ' || p_name as fio from user_info where date_out > cast('NOW' as date)";
+        List<KeyValuePair> resultList = new ArrayList<>();
+        try{
+            connection = daoFactory.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                KeyValuePair keyValuePair = new KeyValuePair(resultSet.getString("id_user"), resultSet.getString("fio"));
+                resultList.add(keyValuePair);
+            }
+        }catch (Exception e)
+        {
+            throw new DAOException("getUserComboBox", e);
+        }
+        finally {
+            try{
+                resultSet.close();
+                statement.close();
+                connection.close();
+            }catch (SQLException e){
+                throw new DAOException("SQL getUserComboBox", e);
+            }
+        }
+        return resultList;
     }
 
     @Override
