@@ -1,7 +1,9 @@
 package ru.medyannikov.dao;
 
 import ru.medyannikov.dao.factory.FirebirdDAOFactory;
+import ru.medyannikov.model.Department;
 import ru.medyannikov.model.InvestProject;
+import ru.medyannikov.model.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -45,9 +47,11 @@ public class InvestProjectDAO implements DAO<InvestProject> {
     @Override
     public List<InvestProject> getAll() throws DAOException{
         List<InvestProject> investProjectList = new ArrayList<>();
-        DepartmentDAO departmentDAO = new DepartmentDAO();
-        UserDAO userDAO = new UserDAO();
-        String sql = "select * from invest_project";
+        //DepartmentDAO departmentDAO = new DepartmentDAO();
+        //UserDAO userDAO = new UserDAO();
+        String sql = "select invest_project.*, l_name, f_name, p_name, dept_name from invest_project " +
+                "left join depts on depts.dept_id = invest_project.id_dept " +
+                "left join user_info u on u.id_user = invest_project.id_user";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -60,14 +64,27 @@ public class InvestProjectDAO implements DAO<InvestProject> {
             while (resultSet.next()){
                 InvestProject investProject = new InvestProject();
                 investProject.setIdProject(resultSet.getInt("id_project"));
-                investProject.setDepartment(departmentDAO.getById(resultSet.getInt("id_dept")));
+
+                Department department = new Department();
+                department.setNameDepartment(resultSet.getString("dept_name"));
+                department.setIdDepartment(resultSet.getInt("id_dept"));
+                investProject.setDepartment(department);
+                //investProject.setDepartment(departmentDAO.getById(resultSet.getInt("id_dept")));
+
                 investProject.setAboutProject(resultSet.getString("about_project"));
                 investProject.setDateBegin(resultSet.getDate("date_begin_plan"));
                 investProject.setDateEnd(resultSet.getDate("date_end_plan"));
                 investProject.setDateBeginProg(resultSet.getDate("date_begin_prog"));
                 investProject.setDateEndProg(resultSet.getDate("date_end_prog"));
                 investProject.setNumberProject(resultSet.getString("number_project"));
-                investProject.setUser(userDAO.getById(resultSet.getInt("id_user")));
+
+                User user = new User();
+                user.setFirstName(resultSet.getString("f_name"));
+                user.setSecondName(resultSet.getString("l_name"));
+                user.setThirdName(resultSet.getString("p_name"));
+                user.setId(resultSet.getInt("id_user"));
+                investProject.setUser(user);
+                //investProject.setUser(userDAO.getById(resultSet.getInt("id_user")));
                 investProject.setNameProject(resultSet.getString("name_project"));
                 investProjectList.add(investProject);
             }

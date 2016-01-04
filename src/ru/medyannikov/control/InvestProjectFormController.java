@@ -1,4 +1,4 @@
-package ru.medyannikov.view;
+package ru.medyannikov.control;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -18,7 +18,7 @@ import ru.medyannikov.model.StageProject;
 /**
  * Created by Vladimir on 03.01.2016.
  */
-public class InvestProjectController {
+public class InvestProjectFormController {
     @FXML
     private TableView<InvestProject> investProjectTableView;
     @FXML
@@ -65,7 +65,7 @@ public class InvestProjectController {
     private TableColumn<StageProject, String> stageProjectCommentUser;
 
 
-    public InvestProjectController() {
+    public InvestProjectFormController() {
     }
 
     private Main mainApp;

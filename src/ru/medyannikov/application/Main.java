@@ -7,15 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ru.medyannikov.dao.InvestProjectDAO;
-import ru.medyannikov.dao.UserDAO;
-import ru.medyannikov.dao.factory.FirebirdDAOFactory;
-import ru.medyannikov.model.InvestProject;
 import ru.medyannikov.model.User;
-import ru.medyannikov.view.InvestProjectController;
-import ru.medyannikov.view.SampleOverviewController;
-
-import java.sql.Connection;
+import ru.medyannikov.control.InvestProjectFormController;
 
 public class Main extends Application {
 
@@ -32,7 +25,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
 
-        InvestProjectController controller = loader.getController();
+        InvestProjectFormController controller = loader.getController();
         controller.setMainApp();
         /*FirebirdDAOFactory daoFactory = new FirebirdDAOFactory();
         Connection connection = daoFactory.getConnection();
