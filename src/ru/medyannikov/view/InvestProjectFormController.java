@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import ru.medyannikov.application.Main;
 import ru.medyannikov.dao.DAOException;
@@ -22,6 +23,7 @@ import ru.medyannikov.model.InvestProject;
 import ru.medyannikov.model.StageProject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Vladimir on 03.01.2016.
@@ -225,7 +227,7 @@ public class InvestProjectFormController {
             public void changed(ObservableValue<? extends InvestProject> observableValue, InvestProject prev, InvestProject t1) {
                 try {
                     stageProjectTableView.setItems(FXCollections.observableList(t1.getProjectList()));
-                    prev.setProjectList(null);
+//                    prev.setProjectList(new ArrayList());
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
@@ -253,6 +255,7 @@ public class InvestProjectFormController {
         stage.setScene(new Scene(root));
         stage.setTitle("My modal window");
         stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
         stage.initOwner(investProjectTableView.getScene().getWindow());
         //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
         stage.show();
@@ -269,6 +272,8 @@ public class InvestProjectFormController {
         //((investProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
         stage.setTitle("My modal window");
         stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setResizable(false);
         stage.initOwner(investProjectTableView.getScene().getWindow());
         //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
         stage.show();

@@ -22,7 +22,7 @@ public class Main extends Application {
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectForm.fxml"));
         Parent root = (Parent) loader.load();
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 900, 500));
         primaryStage.show();
 
         InvestProjectFormController controller = loader.getController();
@@ -46,7 +46,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-
         launch(args);
     }
 
