@@ -50,7 +50,7 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                <MenuItem fx:id="addInvestProject" mnemonicParsing="false" onAction="#dialogIvestProject" text="Создать новый проект" />
               </items>
             </ContextMenu>
          </contextMenu>

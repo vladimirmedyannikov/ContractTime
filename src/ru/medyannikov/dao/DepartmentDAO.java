@@ -34,18 +34,19 @@ public class DepartmentDAO implements DAO<Department> {
     }
 
     public DepartmentDAO() {
-        try {
+       /* try {
             departmentList = getAll();
         } catch (DAOException e) {
             e.printStackTrace();
         }
+        */
     }
 
     public List<KeyValuePair> getDepatmentComboBox() throws DAOException{
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        String sql = "Select dept_id, name_firm || ' ' || dept_name as dept_name from depts " +
+        String sql = "Select dept_id, name_firm || ' - ' || dept_name as dept_name from depts " +
                 "left join firm on firm.id_firm = depts.firm_id order by depts.firm_id, dept_name";
         List<KeyValuePair> keyValuePairs = new ArrayList<>();
         try{

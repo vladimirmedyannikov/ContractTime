@@ -36,7 +36,7 @@ public class UserDAO implements DAO<User> {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        String sql = "select id_user, l_name || ' ' || f_name || ' ' || p_name as fio from user_info where date_out > cast('NOW' as date)";
+        String sql = "select id_user, l_name || ' ' || f_name || ' ' || p_name as fio from user_info where date_out > cast('NOW' as date) order by fio";
         List<KeyValuePair> resultList = new ArrayList<>();
         try{
             connection = daoFactory.getConnection();

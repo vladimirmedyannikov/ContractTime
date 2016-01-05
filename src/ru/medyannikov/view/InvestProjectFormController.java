@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Modality;
@@ -73,6 +74,9 @@ public class InvestProjectFormController {
     private TableColumn<StageProject, String> stageProjectStatus;
     @FXML
     private TableColumn<StageProject, String> stageProjectCommentUser;
+
+    @FXML
+    private MenuItem addInvestProject;
 
     @FXML
     private Button buttonOpen;
@@ -246,7 +250,7 @@ public class InvestProjectFormController {
         stage.setTitle("My modal window");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
-                ((Node)event.getSource()).getScene().getWindow() );
+                ((Node)event.getSource()).getScene().getWindow());
         stage.show();
     }
 }
