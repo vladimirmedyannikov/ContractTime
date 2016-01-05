@@ -19,4 +19,12 @@ public class KeyValuePair {
     public String toString(){
         return value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof KeyValuePair){
+            return getKey().equals(((KeyValuePair)obj).getKey()) ? true : false;
+        }
+        else return false;
+    }
 }

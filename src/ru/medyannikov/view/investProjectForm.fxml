@@ -48,9 +48,10 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
          <contextMenu>
-            <ContextMenu>
+            <ContextMenu fx:id="investProjectMenu">
               <items>
                 <MenuItem fx:id="addInvestProject" mnemonicParsing="false" onAction="#dialogIvestProject" text="Создать новый проект" />
+                  <MenuItem fx:id="editInvestProject" mnemonicParsing="false" onAction="#dialogEditInvestProject" text="Редактировать" />
               </items>
             </ContextMenu>
          </contextMenu>

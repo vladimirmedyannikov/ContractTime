@@ -169,11 +169,11 @@ public class User {
     }
 
     public String getFullName() {
-        return fullName.get();
+        return getSecondName() + " " + getFirstName() + " " + getThirdName();
     }
 
     public StringProperty fullNameProperty() {
-        return new SimpleStringProperty(getFirstName() + " " + getSecondName() + " " + getThirdName());
+        return new SimpleStringProperty(getSecondName() + " " + getFirstName() + " " + getThirdName());
     }
 
     public void setFullName(String fullName) {

@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -76,10 +73,17 @@ public class InvestProjectFormController {
     private TableColumn<StageProject, String> stageProjectCommentUser;
 
     @FXML
+    private ContextMenu investProjectMenu;
+    @FXML
     private MenuItem addInvestProject;
+    @FXML
+    private MenuItem editInvestProject;
 
     @FXML
     private Button buttonOpen;
+
+    @FXML
+    private InvestProject investProject;
 
 
     public InvestProjectFormController() {
@@ -249,8 +253,24 @@ public class InvestProjectFormController {
         stage.setScene(new Scene(root));
         stage.setTitle("My modal window");
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(
-                ((Node)event.getSource()).getScene().getWindow());
+        stage.initOwner(investProjectTableView.getScene().getWindow());
+        //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
+        stage.show();
+    }
+
+    public void dialogEditInvestProject() throws IOException{
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
+        Parent root = (Parent) loader.load();
+        Scene scene = new Scene(root);
+        ((investProjectDialogController)loader.getController()).setInvestProject(investProjectTableView.getSelectionModel().getSelectedItem());
+        stage.setScene(scene);
+        //((investProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
+        stage.setTitle("My modal window");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(investProjectTableView.getScene().getWindow());
+        //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
         stage.show();
     }
 }

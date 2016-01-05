@@ -86,8 +86,8 @@ public class DepartmentDAO implements DAO<Department> {
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             while (resultSet.next()){
-                department.setIdDepartment(resultSet.getInt(1));
-                department.setNameDepartment(resultSet.getString(2));
+                department.setIdDepartment(resultSet.getInt("dept_id"));
+                department.setNameDepartment(resultSet.getString("dept_name"));
             }
         }
         catch (Exception e){
@@ -125,8 +125,8 @@ public class DepartmentDAO implements DAO<Department> {
             while(resultSet.next())
             {
                 Department dep = new Department();
-                dep.setNameDepartment(resultSet.getString(2));
-                dep.setIdDepartment(resultSet.getInt(1));
+                dep.setNameDepartment(resultSet.getString("dept_name"));
+                dep.setIdDepartment(resultSet.getInt("dept_id"));
                 departmentList.add(dep);
                 //System.out.println(resultSet.getInt(1) + " | " + resultSet.getString(2));
             }

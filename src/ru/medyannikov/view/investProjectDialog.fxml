@@ -6,57 +6,69 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.medyannikov.view.investProjectDialogController">
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" scaleShape="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.medyannikov.view.investProjectDialogController">
    <children>
-      <Label text="Параметры проекта">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <GridPane maxWidth="1.7976931348623157E308" prefHeight="453.0" prefWidth="580.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="142.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="545.0" minWidth="10.0" prefWidth="458.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="31.0" minHeight="4.0" prefHeight="31.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="34.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="41.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="32.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="32.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" prefHeight="436.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="Название проекта" />
-            <Label text="Номер проекта" GridPane.rowIndex="1" />
-            <Label text="Подразделение" GridPane.rowIndex="2" />
-            <Label text="Ответственный" GridPane.rowIndex="3" />
-            <Label text="Начало (план)" GridPane.rowIndex="4" />
-            <Label text="Завершение (план)" GridPane.rowIndex="5" />
-            <Label text="Начало (прогноз)" GridPane.rowIndex="6" />
-            <Label text="Завершение (прогноз)" GridPane.rowIndex="7" />
-            <Label text="Комментарий" GridPane.rowIndex="8" />
-            <TextField fx:id="nameProject" GridPane.columnIndex="1" />
-            <ComboBox fx:id="departmentBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="numberProject" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="userBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <DatePicker fx:id="dateBeginPlan" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <DatePicker fx:id="dateEndPlan" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <DatePicker fx:id="dateBeginProg" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <DatePicker fx:id="dateEndProg" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextArea fx:id="aboutComment" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label text="Параметры проекта">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <GridPane alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="580.0" prefHeight="453.0" prefWidth="580.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="142.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="545.0" minWidth="10.0" prefWidth="458.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="31.0" minHeight="4.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="34.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="41.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="32.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="32.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label minHeight="-Infinity" minWidth="-Infinity" text="Название проекта" />
+                  <Label text="Номер проекта" GridPane.rowIndex="1" />
+                  <Label text="Подразделение" GridPane.rowIndex="2" />
+                  <Label text="Ответственный" GridPane.rowIndex="3" />
+                  <Label text="Начало (план)" GridPane.rowIndex="4" />
+                  <Label text="Завершение (план)" GridPane.rowIndex="5" />
+                  <Label text="Начало (прогноз)" GridPane.rowIndex="6" />
+                  <Label text="Завершение (прогноз)" GridPane.rowIndex="7" />
+                  <Label text="Комментарий" GridPane.rowIndex="8" />
+                  <TextField fx:id="nameProject" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="departmentBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="numberProject" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="userBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <DatePicker fx:id="dateBeginPlan" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <DatePicker fx:id="dateEndPlan" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <DatePicker fx:id="dateBeginProg" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <DatePicker fx:id="dateEndProg" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <TextArea fx:id="aboutComment" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </GridPane>
+            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="600.0" prefHeight="44.0" prefWidth="600.0" spacing="50.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Сохранить" />
+                  <Button mnemonicParsing="false" text="Отмена" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
          </children>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-      </GridPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Button layoutY="2.0" mnemonicParsing="false" text="Button" />
-         </children>
-      </AnchorPane>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>
