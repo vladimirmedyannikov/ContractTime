@@ -102,11 +102,11 @@ public class StageProjectDAO implements DAO<StageProject> {
         }
         finally {
             try {
-                resultSet.close();
-                statement.close();
-                connection.close();
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
             }catch (SQLException e){
-                throw new DAOException("SQL StageProject",e);
+                Log.info("getSubStage SQLException");
             }
         }
         return subStageList;
@@ -136,11 +136,11 @@ public class StageProjectDAO implements DAO<StageProject> {
         }
         finally {
             try {
-                resultSet.close();
-                statement.close();
-                connection.close();
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
             }catch (SQLException e){
-                throw new DAOException("SQL StageProject",e);
+                Log.info("getSubStage SQLException");
             }
         }
         return subStageList;
@@ -194,9 +194,9 @@ public class StageProjectDAO implements DAO<StageProject> {
         }
         finally {
             try {
-                resultSet.close();
-                statement.close();
-                connection.close();
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
             }catch (SQLException e){
                 throw new DAOException("SQL StageProject",e);
             }

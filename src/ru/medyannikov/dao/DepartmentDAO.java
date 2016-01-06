@@ -34,12 +34,7 @@ public class DepartmentDAO implements DAO<Department> {
     }
 
     public DepartmentDAO() {
-       /* try {
-            departmentList = getAll();
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        */
+
     }
 
     public List<KeyValuePair> getDepatmentComboBox() throws DAOException{
@@ -63,11 +58,11 @@ public class DepartmentDAO implements DAO<Department> {
         }
         finally {
             try{
-                resultSet.close();
-                statement.close();
-                connection.close();
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
             }catch (SQLException e){
-                throw new DAOException("SQL getDepartmentComboBox", e);
+                Log.info("SQLException finally block");
             }
         }
     return keyValuePairs;
@@ -95,20 +90,15 @@ public class DepartmentDAO implements DAO<Department> {
         }
         finally {
             try{
-                resultSet.close();
-                connection.close();
-                statement.close();
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
             }
             catch (SQLException e){
-                throw new DAOException("SQL Department getById "+id,e);
+                Log.info("GetById Department SQLException finally block");
             }
         }
-
-        /*for(Department d: departmentList){
-            if (d.getIdDepartment() == id) return d;
-        }*/
-        return null;
-        //return department;
+        return department;
     }
 
     @Override
@@ -128,7 +118,6 @@ public class DepartmentDAO implements DAO<Department> {
                 dep.setNameDepartment(resultSet.getString("dept_name"));
                 dep.setIdDepartment(resultSet.getInt("dept_id"));
                 departmentList.add(dep);
-                //System.out.println(resultSet.getInt(1) + " | " + resultSet.getString(2));
             }
         }
         catch (Exception e){
@@ -136,9 +125,9 @@ public class DepartmentDAO implements DAO<Department> {
         }
         finally {
             try {
-                resultSet.close();
-                statement.close();
-                connection.close();
+                if (resultSet != null)resultSet.close();
+                if (statement != null)statement.close();
+                if (connection != null)connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
