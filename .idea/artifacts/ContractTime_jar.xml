@@ -1,8 +1,12 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="ContractTime:jar">
+  <artifact type="jar" build-on-make="true" name="ContractTime:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/ContractTime_jar</output-path>
     <root id="archive" name="ContractTime.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/out/META-INF/MANIFEST.MF" />
+      </element>
       <element id="module-output" name="ContractTime" />
+      <element id="library" level="project" name="jdk1.7" />
       <element id="extracted-dir" path="D:/Torrents/Downloads/Jaybird-2.2.9-JDK_1.7/jaybird-2.2.9.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/Torrents/Downloads/Jaybird-2.2.9-JDK_1.7/jaybird-full-2.2.9.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/Torrents/Downloads/Jaybird-2.2.9-JDK_1.7/jaybird-2.2.9-javadoc.jar" path-in-jar="/" />

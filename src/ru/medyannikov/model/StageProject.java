@@ -1,6 +1,8 @@
 package ru.medyannikov.model;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.Date;
 
@@ -21,6 +23,16 @@ public class StageProject {
     private ObjectProperty<Date> dateEndUser = new SimpleObjectProperty<>();
     private IntegerProperty statusStage = new SimpleIntegerProperty();
     private StringProperty commentUser = new SimpleStringProperty();
+
+    private ObservableList<StageProject> subStage = FXCollections.emptyObservableList();
+
+    public ObservableList<StageProject> getSubStage() {
+        return subStage;
+    }
+
+    public void setSubStage(ObservableList<StageProject> subStage) {
+        this.subStage = subStage;
+    }
 
     public StageProject(){
 

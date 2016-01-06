@@ -28,10 +28,10 @@ public class InvestProject {
     private List<StageProject> projectList;
 
     public List<StageProject> getProjectList() throws DAOException {
-        if (projectList == null){
+        //if (projectList == null){
             StageProjectDAO dao = new StageProjectDAO();
-            projectList = dao.getByProject(getIdProject());
-        }
+            projectList = dao.getByProject(this.getIdProject());
+       // }
         return projectList;
     }
 

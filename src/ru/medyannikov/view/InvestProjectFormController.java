@@ -24,6 +24,7 @@ import ru.medyannikov.model.StageProject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Vladimir on 03.01.2016.
@@ -86,6 +87,13 @@ public class InvestProjectFormController {
 
     @FXML
     private InvestProject investProject;
+
+    @FXML
+    private TreeTableView<StageProject> treeTableViewStage;
+    @FXML
+    private TreeTableColumn<StageProject, String> nameStage;
+    @FXML
+    private TreeTableColumn<StageProject, String> idParent;
 
 
     public InvestProjectFormController() {
@@ -221,12 +229,40 @@ public class InvestProjectFormController {
             }
         });
 
+        nameStage.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> param) {
+                return param.getValue().getValue().nameStageProperty();
+            }
+        });
+
+        idParent.setCellValueFactory(value -> value.getValue().getValue().nameStageProperty());
+
 
         investProjectTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<InvestProject>() {
             @Override
             public void changed(ObservableValue<? extends InvestProject> observableValue, InvestProject prev, InvestProject t1) {
                 try {
-                    stageProjectTableView.setItems(FXCollections.observableList(t1.getProjectList()));
+                    List<StageProject> list = t1.getProjectList();
+                    //stageProjectTableView.setItems(FXCollections.observableList(list));
+
+                    TreeItem<StageProject> root = new TreeItem();
+                    root.setValue(new StageProject());
+                    treeTableViewStage.setRoot(root);
+                    for (StageProject stage : list) {
+                        TreeItem<StageProject> stageRoot = new TreeItem<StageProject>();
+                        stageRoot.setValue(stage);
+                        if (stage.getSubStage() != null) {
+                            for (StageProject sub : stage.getSubStage()) {
+                                TreeItem<StageProject> subStage = new TreeItem<StageProject>(sub);
+                                stageRoot.getChildren().add(subStage);
+                            }
+                        }
+                        //stageRoot.getChildren().addAll(stage.getSubStage())
+                        root.getChildren().add(stageRoot);
+
+
+                    }
 //                    prev.setProjectList(new ArrayList());
                 } catch (DAOException e) {
                     e.printStackTrace();
@@ -253,7 +289,7 @@ public class InvestProjectFormController {
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
         Parent root = (Parent) loader.load();
         stage.setScene(new Scene(root));
-        stage.setTitle("My modal window");
+        stage.setTitle("Создание проекта");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setResizable(false);
         stage.initOwner(investProjectTableView.getScene().getWindow());
@@ -267,10 +303,10 @@ public class InvestProjectFormController {
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
-        ((investProjectDialogController)loader.getController()).setInvestProject(investProjectTableView.getSelectionModel().getSelectedItem());
+        ((InvestProjectDialogController)loader.getController()).setInvestProject(investProjectTableView.getSelectionModel().getSelectedItem());
         stage.setScene(scene);
-        //((investProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
-        stage.setTitle("My modal window");
+        //((InvestProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
+        stage.setTitle("Изменение проекта");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initStyle(StageStyle.DECORATED);
         stage.setResizable(false);

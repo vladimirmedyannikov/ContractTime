@@ -56,6 +56,12 @@
             </ContextMenu>
          </contextMenu>
       </TableView>
+      <TreeTableView fx:id="treeTableViewStage" layoutY="505.0" prefHeight="200.0" prefWidth="697.0">
+        <columns>
+          <TreeTableColumn fx:id="idParent" prefWidth="75.0" text="C1" />
+          <TreeTableColumn fx:id="nameStage" prefWidth="75.0" text="C2" />
+        </columns>
+      </TreeTableView>
       <TableView fx:id="stageProjectTableView" layoutY="280.0" prefHeight="200.0" prefWidth="748.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
           <TableColumn fx:id="stageProjectName" prefWidth="75.0" text="Этап" />

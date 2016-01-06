@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" scaleShape="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.medyannikov.view.investProjectDialogController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" scaleShape="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.medyannikov.view.InvestProjectDialogController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="600.0" prefHeight="436.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -58,8 +58,8 @@
             </GridPane>
             <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="600.0" prefHeight="44.0" prefWidth="600.0" spacing="50.0">
                <children>
-                  <Button mnemonicParsing="false" text="Сохранить" />
-                  <Button mnemonicParsing="false" text="Отмена" />
+                  <Button fx:id="buttonOk" mnemonicParsing="false" text="Сохранить" />
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" text="Отмена" />
                </children>
                <opaqueInsets>
                   <Insets />
