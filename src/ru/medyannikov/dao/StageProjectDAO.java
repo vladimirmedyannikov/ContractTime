@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Created by Vladimir on 03.01.2016.
@@ -47,7 +48,7 @@ public class StageProjectDAO implements DAO<StageProject> {
         ResultSet resultSet = null;
         String sql = "select id_stage, id_project, name_stage, u.id_user, l_name, f_name, p_name, date_begin_plan, " +
                 "date_end_plan, date_begin_prog, date_end_prog, date_begin_user, date_end_user, " +
-                "status_stage, comment_user from stage_project " +
+                "status_stage, comment_user, id_stage_parent from stage_project " +
                 "inner join user_info u on u.id_user = stage_project.id_user where id_project = ? and stage_project.id_stage_parent = 0;";
         List<StageProject> stageProjectList = new ArrayList<>();
         try{
@@ -55,9 +56,11 @@ public class StageProjectDAO implements DAO<StageProject> {
             statement = connection.prepareStatement(sql);
             statement.setInt(1, idProject);
             resultSet = statement.executeQuery();
+            List<StageProject> subStage = getSubStageProject(idProject);
             while (resultSet.next()){
                 StageProject stageProject = generateStageProject(resultSet);
-                stageProject.setSubStage(FXCollections.observableArrayList(getSubStage(idProject, stageProject.getIdStage())));
+                stageProject.setSubStage(FXCollections.observableArrayList(subStage.stream().filter(i -> i.getIdParentStage() == stageProject.getIdStage()).collect(Collectors.toList())));
+                //stageProject.setSubStage(FXCollections.observableArrayList(getSubStage(idProject, stageProject.getIdStage())));
                 stageProjectList.add(stageProject);
             }
         }catch (Exception e){
@@ -76,13 +79,46 @@ public class StageProjectDAO implements DAO<StageProject> {
         return stageProjectList;
     }
 
+    private List<StageProject> getSubStageProject(int idProject) throws DAOException{
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String sql = "select id_stage, id_project, name_stage, u.id_user, l_name, f_name, p_name, date_begin_plan, " +
+                "date_end_plan, date_begin_prog, date_end_prog, date_begin_user, date_end_user, " +
+                "status_stage, comment_user, id_stage_parent from stage_project " +
+                "inner join user_info u on u.id_user = stage_project.id_user where stage_project.id_stage_parent <> 0 and id_project = ?;";
+        List<StageProject> subStageList = new ArrayList<>();
+        try{
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, idProject);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                StageProject stageProject = generateStageProject(resultSet);
+                subStageList.add(stageProject);
+            }
+        }catch (Exception e){
+            throw new DAOException("StageProject getAll",e);
+        }
+        finally {
+            try {
+                resultSet.close();
+                statement.close();
+                connection.close();
+            }catch (SQLException e){
+                throw new DAOException("SQL StageProject",e);
+            }
+        }
+        return subStageList;
+    }
+
     private List<StageProject> getSubStage(int idProject ,int idStage) throws DAOException{
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         String sql = "select id_stage, id_project, name_stage, u.id_user, l_name, f_name, p_name, date_begin_plan, " +
                 "date_end_plan, date_begin_prog, date_end_prog, date_begin_user, date_end_user, " +
-                "status_stage, comment_user from stage_project " +
+                "status_stage, comment_user, id_stage_parent from stage_project " +
                 "inner join user_info u on u.id_user = stage_project.id_user where stage_project.id_stage_parent = ? and id_project = ?;";
         List<StageProject> subStageList = new ArrayList<>();
         try{
@@ -131,6 +167,7 @@ public class StageProjectDAO implements DAO<StageProject> {
         stageProject.setDateEndUser(resultSet.getDate("date_end_user"));
         stageProject.setStatusStage(resultSet.getInt("status_stage"));
         stageProject.setCommentUser(resultSet.getString("comment_user"));
+        stageProject.setIdParentStage(resultSet.getInt("id_stage_parent"));
         return stageProject;
     }
 

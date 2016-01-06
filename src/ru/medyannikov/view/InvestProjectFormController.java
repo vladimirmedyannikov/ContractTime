@@ -53,27 +53,27 @@ public class InvestProjectFormController {
 
 
     @FXML
-    private TableView<StageProject> stageProjectTableView;
+    private TreeTableView<StageProject> stageProjectTableView;
     @FXML
-    private TableColumn<StageProject, String> stageProjectName;
+    private TreeTableColumn<StageProject, String> stageProjectName;
     @FXML
-    private TableColumn<StageProject, String> stageProjectUser;
+    private TreeTableColumn<StageProject, String> stageProjectUser;
     @FXML
-    private TableColumn<StageProject, String> stageProjectDateBeginPlan;
+    private TreeTableColumn<StageProject, String> stageProjectDateBeginPlan;
     @FXML
-    private TableColumn<StageProject, String> stageProjectDateEndPlan;
+    private TreeTableColumn<StageProject, String> stageProjectDateEndPlan;
     @FXML
-    private TableColumn<StageProject, String> stageProjectDateBeginUser;
+    private TreeTableColumn<StageProject, String> stageProjectDateBeginUser;
     @FXML
-    private TableColumn<StageProject, String> stageProjectDateEndUser;
+    private TreeTableColumn<StageProject, String> stageProjectDateEndUser;
     @FXML
-    private TableColumn<StageProject, String> stageProjectDateBeginProg;
+    private TreeTableColumn<StageProject, String> stageProjectDateBeginProg;
     @FXML
-    private TableColumn<StageProject, String> stageProjectDateEndProg;
+    private TreeTableColumn<StageProject, String> stageProjectDateEndProg;
     @FXML
-    private TableColumn<StageProject, String> stageProjectStatus;
+    private TreeTableColumn<StageProject, String> stageProjectStatus;
     @FXML
-    private TableColumn<StageProject, String> stageProjectCommentUser;
+    private TreeTableColumn<StageProject, String> stageProjectCommentUser;
 
     @FXML
     private ContextMenu investProjectMenu;
@@ -159,93 +159,81 @@ public class InvestProjectFormController {
         });
 
 
-        stageProjectName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return stageProjectStringCellDataFeatures.getValue().nameStageProperty();
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return stageProjectStringCellDataFeatures.getValue().getValue().nameStageProperty();
             }
         });
 
-        stageProjectUser.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectUser.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return stageProjectStringCellDataFeatures.getValue().userProperty().getValue().fullNameProperty();
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return stageProjectStringCellDataFeatures.getValue().getValue().userProperty().getValue().fullNameProperty();
             }
         });
 
-        stageProjectDateBeginPlan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectDateBeginPlan.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().dateBeginPlanProperty().getValue().toString());
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginPlanProperty().getValue().toString());
             }
         });
 
-        stageProjectDateEndPlan.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectDateEndPlan.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().dateEndPlanProperty().getValue().toString());
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndPlanProperty().getValue().toString());
             }
         });
 
-        stageProjectDateBeginUser.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectDateBeginUser.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().dateBeginUserProperty().getValue().toString());
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginUserProperty().getValue().toString());
             }
         });
 
-        stageProjectDateEndUser.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectDateEndUser.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().dateEndUserProperty().getValue().toString());
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndUserProperty().getValue().toString());
             }
         });
 
-        stageProjectDateBeginProg.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectDateBeginProg.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().dateBeginProgProperty().getValue().toString());
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginProgProperty().getValue().toString());
             }
         });
 
-        stageProjectDateEndProg.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectDateEndProg.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().dateEndProgProperty().getValue().toString());
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndProgProperty().getValue().toString());
             }
         });
 
-        stageProjectStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectStatus.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().statusStageProperty().toString());
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().statusStageProperty().toString());
             }
         });
 
-        stageProjectCommentUser.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
+        stageProjectCommentUser.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return stageProjectStringCellDataFeatures.getValue().commentUserProperty();
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
+                return stageProjectStringCellDataFeatures.getValue().getValue().commentUserProperty();
             }
         });
-
-        nameStage.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> param) {
-                return param.getValue().getValue().nameStageProperty();
-            }
-        });
-
-        idParent.setCellValueFactory(value -> value.getValue().getValue().nameStageProperty());
-
 
         investProjectTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<InvestProject>() {
             @Override
             public void changed(ObservableValue<? extends InvestProject> observableValue, InvestProject prev, InvestProject t1) {
                 try {
                     List<StageProject> list = t1.getProjectList();
-                    //stageProjectTableView.setItems(FXCollections.observableList(list));
-
                     TreeItem<StageProject> root = new TreeItem();
                     root.setValue(new StageProject());
                     treeTableViewStage.setRoot(root);
@@ -258,16 +246,11 @@ public class InvestProjectFormController {
                                 stageRoot.getChildren().add(subStage);
                             }
                         }
-                        //stageRoot.getChildren().addAll(stage.getSubStage())
                         root.getChildren().add(stageRoot);
-
-
                     }
-//                    prev.setProjectList(new ArrayList());
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-                //System.out.println(t1.getFullName());
             }
         });
 
@@ -275,7 +258,6 @@ public class InvestProjectFormController {
 
     public void setMainApp() {
         InvestProjectDAO investProjectDAO = new InvestProjectDAO();
-        //ObservableList<User> list = FXCollections.observableList(userDAO.getAll());
         try {
             investProjectTableView.setItems(FXCollections.observableArrayList(investProjectDAO.getAll()));
         } catch (DAOException e) {
