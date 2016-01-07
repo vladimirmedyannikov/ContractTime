@@ -14,6 +14,14 @@ public class Department {
     private ObjectProperty<Firm> firmDepartment = new SimpleObjectProperty<>();
     private ObjectProperty<Department> parentDepartment = new SimpleObjectProperty<>();
 
+    public Department(){
+
+    }
+
+    public Department(int idDepartment){
+        this.idDepartment = idDepartment;
+    }
+
     public int getIdDepartment() {
         return idDepartment;
     }

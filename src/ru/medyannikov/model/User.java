@@ -32,6 +32,9 @@ public class User {
     public User() {
 
     }
+    public User(int idUser){
+        this.id = idUser;
+    }
 
     public String getFirstName() {
         return firstName.get();

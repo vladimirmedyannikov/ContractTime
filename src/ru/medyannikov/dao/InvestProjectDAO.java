@@ -5,10 +5,7 @@ import ru.medyannikov.model.Department;
 import ru.medyannikov.model.InvestProject;
 import ru.medyannikov.model.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,8 +22,42 @@ public class InvestProjectDAO implements DAO<InvestProject> {
     private Logger Log = Logger.getLogger(InvestProjectDAO.class.getName());
 
     @Override
-    public InvestProject insert(InvestProject investProject) {
-        return null;
+    public InvestProject insert(InvestProject investProject) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String sql = "execute procedure insert_invest_project (?, ?, ?, ?, ?, ?, ?);";
+        try
+        {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1,investProject.getNameProject());
+            statement.setString(2, investProject.getNumberProject());
+            statement.setInt(3, investProject.getDepartment().getIdDepartment());
+            statement.setInt(4, investProject.getUser().getId());
+            statement.setDate(5, new java.sql.Date(investProject.getDateBegin().getTime()));
+            statement.setDate(6, new java.sql.Date(investProject.getDateEnd().getTime()));
+            statement.setString(7, investProject.getAboutProject());
+            statement.execute();
+            resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+            if (resultSet != null){
+                investProject.setIdProject(resultSet.getInt("id_project"));
+            }
+
+        }catch (Exception e){
+            throw new DAOException("Insert Invest Project", e);
+        }
+        finally {
+            try{
+                if (resultSet != null) resultSet.close();
+                if (statement != null)statement.close();
+                if (connection != null)connection.close();
+            }catch (SQLException e){
+                //throw new DAOException("InvestProject getAll SQL",e);
+            }
+        }
+        return investProject;
     }
 
     @Override
@@ -35,7 +66,43 @@ public class InvestProjectDAO implements DAO<InvestProject> {
     }
 
     @Override
-    public void update(InvestProject investProject) {
+    public void update(InvestProject investProject) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String sql = "update invest_project set name_project = ?, number_project = ?, id_dept = ?, id_user =?," +
+                "date_begin_plan = ?, date_end_plan =?, date_begin_prog =?, date_end_prog =?, about_project =? " +
+                " where id_project = ?;";
+        try
+        {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1,investProject.getNameProject());
+            statement.setString(2, investProject.getNumberProject());
+            statement.setInt(3, investProject.getDepartment().getIdDepartment());
+            statement.setInt(4, investProject.getUser().getId());
+            statement.setDate(5, new java.sql.Date(investProject.getDateBegin().getTime()));
+            statement.setDate(6, new java.sql.Date(investProject.getDateEnd().getTime()));
+            statement.setDate(7, new java.sql.Date(investProject.getDateBeginProg().getTime()));
+            statement.setDate(8, new java.sql.Date(investProject.getDateEndProg().getTime()));
+            statement.setString(9, investProject.getAboutProject());
+            statement.setInt(10, investProject.getIdProject());
+            statement.execute();
+            /*resultSet = statement.getGeneratedKeys();
+            resultSet.next();*/
+
+        }catch (Exception e){
+            throw new DAOException("Insert Invest Project", e);
+        }
+        finally {
+            try{
+                if (resultSet != null) resultSet.close();
+                if (statement != null)statement.close();
+                if (connection != null)connection.close();
+            }catch (SQLException e){
+                //throw new DAOException("InvestProject getAll SQL",e);
+            }
+        }
 
     }
 

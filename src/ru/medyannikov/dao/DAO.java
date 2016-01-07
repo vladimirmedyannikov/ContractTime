@@ -7,9 +7,9 @@ import java.util.List;
  */
 public interface DAO<E> {
     //public E read(E e);
-    public E insert(E e);
-    public void delete(E e);
-    public void update(E e);
+    public E insert(E e) throws DAOException;
+    public void delete(E e) throws DAOException;
+    public void update(E e) throws DAOException;
     public E getById(int id) throws DAOException;
     public List<E> getAll() throws DAOException;
 }
