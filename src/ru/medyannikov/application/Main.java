@@ -23,6 +23,7 @@ public class Main extends Application {
         Parent root = (Parent) loader.load();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 900, 500));
+        primaryStage.sizeToScene();
         primaryStage.show();
 
         InvestProjectFormController controller = loader.getController();

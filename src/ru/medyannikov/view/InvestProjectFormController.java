@@ -95,6 +95,8 @@ public class InvestProjectFormController {
     @FXML
     private TreeTableColumn<StageProject, String> idParent;
 
+    private Stage investDialog;
+
 
     public InvestProjectFormController() {
     }
@@ -266,34 +268,36 @@ public class InvestProjectFormController {
     }
 
     public void dialogIvestProject(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
+        investDialog = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
         Parent root = (Parent) loader.load();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Создание проекта");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setResizable(false);
-        stage.initOwner(investProjectTableView.getScene().getWindow());
+        investDialog.setScene(new Scene(root));
+        investDialog.setTitle("Создание проекта");
+        investDialog.initModality(Modality.WINDOW_MODAL);
+        investDialog.setResizable(false);
+        investDialog.initOwner(investProjectTableView.getScene().getWindow());
         //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
-        stage.show();
+        investDialog.showAndWait();
+        investProjectTableView.getItems().add(((InvestProjectDialogController)loader.getController()).getInvestProject());
     }
 
     public void dialogEditInvestProject() throws IOException{
-        Stage stage = new Stage();
+        investDialog = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
         ((InvestProjectDialogController)loader.getController()).setInvestProject(investProjectTableView.getSelectionModel().getSelectedItem());
-        stage.setScene(scene);
+        investDialog.setScene(scene);
         //((InvestProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
-        stage.setTitle("Изменение проекта");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initStyle(StageStyle.DECORATED);
-        stage.setResizable(false);
-        stage.initOwner(investProjectTableView.getScene().getWindow());
+        investDialog.setTitle("Изменение проекта");
+        investDialog.initModality(Modality.WINDOW_MODAL);
+        investDialog.initStyle(StageStyle.DECORATED);
+        investDialog.setResizable(false);
+        investDialog.initOwner(investProjectTableView.getScene().getWindow());
         //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
-        stage.show();
+        investDialog.showAndWait();
+        investProjectTableView.layout();
     }
 }
