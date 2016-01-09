@@ -56,7 +56,7 @@
             </ContextMenu>
          </contextMenu>
       </TableView>
-      <TreeTableView fx:id="treeTableViewStage" layoutY="275.0" prefHeight="325.0" prefWidth="1000.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="275.0">
+      <TreeTableView fx:id="stageProjectTreeTableView" layoutY="275.0" prefHeight="325.0" prefWidth="1000.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="275.0">
          <columns>
             <TreeTableColumn fx:id="stageProjectName" prefWidth="75.0" text="Этап" />
             <TreeTableColumn fx:id="stageProjectUser" prefWidth="75.0" text="Ответственный" />
@@ -72,6 +72,16 @@
          <columnResizePolicy>
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
+         <contextMenu>
+            <ContextMenu fx:id="stageMenu">
+              <items>
+                <MenuItem fx:id="stageAdd" mnemonicParsing="false" onAction="#dialogAddStage" text="Добавить этап" />
+                  <MenuItem fx:id="stageAddSub" mnemonicParsing="false" onAction="#dialogAddSubStage" text="Добавить подэтап" />
+                  <MenuItem fx:id="stageDelete" mnemonicParsing="false" onAction="#dialogDeleteStage" text="Удалить" />
+                  <MenuItem fx:id="stageEdit" mnemonicParsing="false" onAction="#dialogEditStage" text="Редактировать" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
       </TreeTableView>
    </children>
 </AnchorPane>

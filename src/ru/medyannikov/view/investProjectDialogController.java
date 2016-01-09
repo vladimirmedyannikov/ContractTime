@@ -7,10 +7,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import ru.medyannikov.dao.DAOException;
 import ru.medyannikov.dao.DepartmentDAO;
 import ru.medyannikov.dao.InvestProjectDAO;
 import ru.medyannikov.dao.UserDAO;
+import ru.medyannikov.model.Department;
 import ru.medyannikov.model.InvestProject;
 import ru.medyannikov.model.User;
 import ru.medyannikov.util.ClassConverter;
@@ -72,6 +77,10 @@ public class InvestProjectDialogController {
 
     }
 
+    public InvestProject getInvestProject(){
+        return investProject;
+    }
+
     @FXML
     private void initialize() throws DAOException {
         DepartmentDAO dao = new DepartmentDAO();
@@ -86,10 +95,13 @@ public class InvestProjectDialogController {
         buttonOk.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                saveProject();
+                try {
+                    saveProject();
+                } catch (DAOException e) {
+
+                }
             }
         });
-
         buttonCancel.setOnAction(event -> cancelProject());
     }
 
@@ -107,25 +119,108 @@ public class InvestProjectDialogController {
 
     }
 
-    private void saveProject() {
-        InvestProjectDAO dao = new InvestProjectDAO();
+    private void saveProject() throws DAOException {
+        InvestProjectDAO investProjectDAO = new InvestProjectDAO();
+        Alert alert = null;
+        if(isValidInput()) {
+            if (investProject != null) {
+                UserDAO userDAO = new UserDAO();
+                DepartmentDAO departmentDAO = new DepartmentDAO();
+                investProject.setNameProject(nameProject.getText());
+                investProject.setNumberProject(numberProject.getText());
+                User user = userDAO.getById(Integer.parseInt(userBox.getSelectionModel().getSelectedItem().getKey()));
+                investProject.setUser(user);
+                investProject.setDepartment(departmentDAO.getById(Integer.parseInt(departmentBox.getSelectionModel().getSelectedItem().getKey())));
+                investProject.setDateBegin(new Date().from(
+                        Instant.from(
+                                dateBeginPlan.getValue().atStartOfDay(ZoneId.systemDefault()))));
+                investProject.setDateEnd(new Date().from(
+                        Instant.from(
+                                dateEndPlan.getValue().atStartOfDay(ZoneId.systemDefault()))));
+                investProject.setDateBeginProg(new Date().from(
+                        Instant.from(
+                                dateBeginProg.getValue().atStartOfDay(ZoneId.systemDefault()))));
+                investProject.setDateEndProg(new Date().from(
+                        Instant.from(
+                                dateEndProg.getValue().atStartOfDay(ZoneId.systemDefault()))));
+                investProject.setAboutProject(aboutComment.getText());
+                investProjectDAO.update(investProject);
+                alert = new Alert(Alert.AlertType.NONE, "Проект обновлен", ButtonType.FINISH);
+                alert.showAndWait().ifPresent(new Consumer<ButtonType>() {
+                    @Override
+                    public void accept(ButtonType buttonType) {
+                    nameProject.getScene().getWindow().hide();
+                }
+                });
+            } else {
+                investProject = new InvestProject();
+                UserDAO userDAO = new UserDAO();
+                DepartmentDAO departmentDAO = new DepartmentDAO();
 
-        if (investProject != null){
-            dao.update(investProject);
+                investProject.setNameProject(nameProject.getText());
+                investProject.setUser(userDAO.getById(Integer.parseInt(userBox.getSelectionModel().getSelectedItem().getKey())));
+                investProject.setDepartment(departmentDAO.getById(Integer.parseInt(departmentBox.getSelectionModel().getSelectedItem().getKey())));
+                investProject.setNumberProject(numberProject.getText());
+                investProject.setDateBegin(new Date().from(
+                        Instant.from(
+                                dateBeginPlan.getValue().atStartOfDay(ZoneId.systemDefault()))
+                ));
+                investProject.setDateEnd(new Date().from(Instant.from(dateEndPlan.getValue().atStartOfDay(ZoneId.systemDefault()))));
+                investProject.setDateBeginProg(investProject.getDateBegin());
+                investProject.setDateEndProg(investProject.getDateEnd());
+
+                investProject.setAboutProject(aboutComment.getText());
+                investProject = investProjectDAO.insert(investProject);
+                if (investProject.getIdProject() != 0) {
+                    alert = new Alert(Alert.AlertType.NONE, "Проект успешно создан", ButtonType.FINISH);
+                } else {
+                    alert = new Alert(Alert.AlertType.NONE, "Проект не был создан", ButtonType.FINISH);
+                }
+                alert.showAndWait().ifPresent(new Consumer<ButtonType>() {
+                    @Override
+                    public void accept(ButtonType buttonType) {
+                        nameProject.getScene().getWindow().hide();
+                    }
+                });
+            }
         }
-        else
-        {
-            investProject = new InvestProject();
-            investProject.setNameProject(nameProject.getText());
-            investProject.setUser(new User());
-            investProject.setNumberProject(numberProject.getText());
-            investProject.setDateBegin(new Date().from(
-                    Instant.from(
-                            dateBeginPlan.getValue().atStartOfDay(ZoneId.systemDefault()))
-            ));
-            investProject.setDateEnd(new Date().from(Instant.from(dateEndPlan.getValue().atStartOfDay(ZoneId.systemDefault()))));
-            dao.insert(investProject);
+    }
+
+    private boolean isValidInput() {
+        boolean valid = true;
+        Alert alert = null;
+        String error = "";
+        if (nameProject.getText() == null || nameProject.getText().length() <= 2){
+            nameProject.setPromptText("Введите название длиной более 2х символов");
+            error +="Введите название длиной более 2х символов\n";
+            valid = false;
         }
+        if (numberProject.getText() == null || numberProject.getText().length() == 0){
+            numberProject.setPromptText("Введите номер проекта");
+            error += "Введите номер проекта\n";
+            valid = false;
+        }
+        if (userBox.getSelectionModel().getSelectedIndex() == -1){
+            userBox.setPromptText("Выберите ответственного сотрудника за проект");
+            error+="Выберите ответственного сотрудника за проект\n";
+            valid = false;
+        }
+        if (departmentBox.getSelectionModel().getSelectedIndex() == -1){
+            departmentBox.setPromptText("Выберите подразделение");
+            error += "Выберите подразделение\n";
+            valid = false;
+        }
+        if (dateEndPlan.getValue().compareTo(dateBeginPlan.getValue()) < 0){
+            dateEndPlan.setPromptText("Дата окончания не должна быть меньше даты начала");
+            error += "Дата окончания не должна быть меньше даты начала\n";
+            valid = false;
+        }
+        if (!valid) {
+            alert = new Alert(Alert.AlertType.ERROR, "Ошибки:\n"+ error, ButtonType.OK);
+            alert.setResizable(false);
+            alert.showAndWait();
+        }
+        return valid;
     }
 
 

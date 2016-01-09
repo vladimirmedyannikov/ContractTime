@@ -4,13 +4,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -18,12 +20,11 @@ import javafx.util.Callback;
 import ru.medyannikov.application.Main;
 import ru.medyannikov.dao.DAOException;
 import ru.medyannikov.dao.InvestProjectDAO;
-import ru.medyannikov.dao.UserDAO;
 import ru.medyannikov.model.InvestProject;
 import ru.medyannikov.model.StageProject;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,19 +84,30 @@ public class InvestProjectFormController {
     private MenuItem editInvestProject;
 
     @FXML
+    private ContextMenu stageMenu;
+    @FXML
+    private MenuItem stageAdd;
+    @FXML
+    private MenuItem stageAddSub;
+    @FXML
+    private MenuItem stageEdit;
+    @FXML
+    private MenuItem stageDelete;
+
+    @FXML
     private Button buttonOpen;
 
     @FXML
     private InvestProject investProject;
 
     @FXML
-    private TreeTableView<StageProject> treeTableViewStage;
+    private TreeTableView<StageProject> stageProjectTreeTableView;
     @FXML
     private TreeTableColumn<StageProject, String> nameStage;
     @FXML
     private TreeTableColumn<StageProject, String> idParent;
 
-    private Stage investDialog;
+    private Stage stage;
 
 
     public InvestProjectFormController() {
@@ -105,6 +117,49 @@ public class InvestProjectFormController {
 
     @FXML
     private void initialize(){
+
+        stageProjectTreeTableView.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
+            @Override
+            public void onChanged(Change<? extends Integer> c) {
+                if (stageProjectTreeTableView.getSelectionModel().getSelectedIndex() == -1){
+                    stageDelete.setDisable(true);
+                    stageAddSub.setDisable(true);
+                    stageEdit.setDisable(true);
+                }else if (stageProjectTreeTableView.getSelectionModel().getSelectedItem().getValue().getIdParentStage() == 0){
+                    stageDelete.setDisable(true);
+                    stageAddSub.setDisable(false);
+                    stageEdit.setDisable(false);
+                    stageDelete.setDisable(false);
+                } else {
+                    stageDelete.setDisable(false);
+                    stageAddSub.setDisable(true);
+                    stageEdit.setDisable(false);
+                    stageDelete.setDisable(false);
+                }
+
+            }
+        });
+
+        investProjectTableView.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener<Integer>() {
+            @Override
+            public void onChanged(ListChangeListener.Change<? extends Integer> change) {
+                if (investProjectTableView.getSelectionModel().getSelectedItem().getDateBegin().compareTo(new Date()) == 1){
+                    investProjectMenu.getItems().get(0).setDisable(true);
+                }
+                else
+                {
+                    investProjectMenu.getItems().get(0).setDisable(false);
+                }
+            }
+        });
+        investProjectTableView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+            @Override
+            public void handle(ContextMenuEvent event) {
+                 //   investProjectTableView.getContextMenu().getItems().get(0).setDisable(false);
+                //System.out.print(event.toString());
+            }
+        });
+
         investProjectName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<InvestProject, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<InvestProject, String> investProjectStringCellDataFeatures) {
@@ -238,7 +293,7 @@ public class InvestProjectFormController {
                     List<StageProject> list = t1.getProjectList();
                     TreeItem<StageProject> root = new TreeItem();
                     root.setValue(new StageProject());
-                    treeTableViewStage.setRoot(root);
+                    stageProjectTreeTableView.setRoot(root);
                     for (StageProject stage : list) {
                         TreeItem<StageProject> stageRoot = new TreeItem<StageProject>();
                         stageRoot.setValue(stage);
@@ -268,36 +323,75 @@ public class InvestProjectFormController {
     }
 
     public void dialogIvestProject(ActionEvent event) throws IOException {
-        investDialog = new Stage();
+        stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
         Parent root = (Parent) loader.load();
-        investDialog.setScene(new Scene(root));
-        investDialog.setTitle("Создание проекта");
-        investDialog.initModality(Modality.WINDOW_MODAL);
-        investDialog.setResizable(false);
-        investDialog.initOwner(investProjectTableView.getScene().getWindow());
+        stage.setScene(new Scene(root));
+        stage.setTitle("Создание проекта");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.initOwner(investProjectTableView.getScene().getWindow());
         //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
-        investDialog.showAndWait();
+        stage.showAndWait();
         investProjectTableView.getItems().add(((InvestProjectDialogController)loader.getController()).getInvestProject());
+        investProjectTableView.refresh();
     }
 
     public void dialogEditInvestProject() throws IOException{
-        investDialog = new Stage();
+        stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/ru/medyannikov/view/investProjectDialog.fxml"));
         Parent root = (Parent) loader.load();
         Scene scene = new Scene(root);
+        InvestProject investProject = investProjectTableView.getSelectionModel().getSelectedItem();
+        int index = investProjectTableView.getItems().indexOf(investProject);
         ((InvestProjectDialogController)loader.getController()).setInvestProject(investProjectTableView.getSelectionModel().getSelectedItem());
-        investDialog.setScene(scene);
+        stage.setScene(scene);
         //((InvestProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
-        investDialog.setTitle("Изменение проекта");
-        investDialog.initModality(Modality.WINDOW_MODAL);
-        investDialog.initStyle(StageStyle.DECORATED);
-        investDialog.setResizable(false);
-        investDialog.initOwner(investProjectTableView.getScene().getWindow());
+        stage.setTitle("Изменение проекта");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setResizable(false);
+        stage.initOwner(investProjectTableView.getScene().getWindow());
         //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
-        investDialog.showAndWait();
-        investProjectTableView.layout();
+        stage.showAndWait();
+        investProjectTableView.refresh();
+    }
+
+
+
+    public void dialogAddStage() throws IOException
+    {
+        stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/ru/medyannikov/view/stageProjectDialog.fxml"));
+        Parent root = (Parent) loader.load();
+        Scene scene = new Scene(root);
+        InvestProject investProject = investProjectTableView.getSelectionModel().getSelectedItem();
+        int index = investProjectTableView.getItems().indexOf(investProject);
+        //((InvestProjectDialogController)loader.getController()).setInvestProject(investProjectTableView.getSelectionModel().getSelectedItem());
+        stage.setScene(scene);
+        //((InvestProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
+        stage.setTitle("Добавление нового этапа");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setResizable(false);
+        stage.initOwner(investProjectTableView.getScene().getWindow());
+        //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
+        stage.showAndWait();
+        investProjectTableView.refresh();
+    }
+
+    public void dialogAddSubStage(){
+
+    }
+
+    public void dialogEditStage(){
+
+    }
+
+    public void dialogDeleteStage(){
+
     }
 }
