@@ -20,12 +20,14 @@ import javafx.util.Callback;
 import ru.medyannikov.application.Main;
 import ru.medyannikov.dao.DAOException;
 import ru.medyannikov.dao.InvestProjectDAO;
+import ru.medyannikov.dao.StageProjectDAO;
 import ru.medyannikov.model.InvestProject;
 import ru.medyannikov.model.StageProject;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Created by Vladimir on 03.01.2016.
@@ -233,42 +235,67 @@ public class InvestProjectFormController {
         stageProjectDateBeginPlan.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginPlanProperty().getValue().toString());
+                if (stageProjectStringCellDataFeatures.getValue().getValue().dateBeginPlanProperty().getValue() != null) {
+                    return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginPlanProperty().getValue().toString());
+                }else{
+                    return new SimpleStringProperty("");
+                }
             }
         });
 
         stageProjectDateEndPlan.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndPlanProperty().getValue().toString());
+                if (stageProjectStringCellDataFeatures.getValue().getValue().dateEndPlanProperty().getValue() != null) {
+                    return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndPlanProperty().getValue().toString());
+                }else{
+                    return new SimpleStringProperty("");
+                }
             }
         });
 
         stageProjectDateBeginUser.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginUserProperty().getValue().toString());
+                if (stageProjectStringCellDataFeatures.getValue().getValue().dateBeginUserProperty().getValue() != null) {
+                    return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginUserProperty().getValue().toString());
+                }else{
+                    return new SimpleStringProperty("");
+                }
             }
         });
 
         stageProjectDateEndUser.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndUserProperty().getValue().toString());
+                if (stageProjectStringCellDataFeatures.getValue().getValue().dateEndUserProperty().getValue() != null) {
+                    return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndUserProperty().getValue().toString());
+                }else{
+                    return new SimpleStringProperty("");
+                }
             }
         });
 
         stageProjectDateBeginProg.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginProgProperty().getValue().toString());
+                if (stageProjectStringCellDataFeatures.getValue().getValue().dateBeginProgProperty().getValue() != null) {
+                    return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateBeginProgProperty().getValue().toString());
+                }else{
+                    return new SimpleStringProperty("");
+                }
             }
         });
 
         stageProjectDateEndProg.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<StageProject, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<StageProject, String> stageProjectStringCellDataFeatures) {
-                return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndProgProperty().getValue().toString());
+                if (stageProjectStringCellDataFeatures.getValue().getValue().dateEndProgProperty().getValue() != null) {
+                    return new SimpleStringProperty(stageProjectStringCellDataFeatures.getValue().getValue().dateEndProgProperty().getValue().toString());
+                }else
+                {
+                    return new SimpleStringProperty("");
+                }
             }
         });
 
@@ -334,8 +361,10 @@ public class InvestProjectFormController {
         stage.initOwner(investProjectTableView.getScene().getWindow());
         //stage.initOwner(((Node)event.getTarget()).getScene().getWindow());
         stage.showAndWait();
-        investProjectTableView.getItems().add(((InvestProjectDialogController)loader.getController()).getInvestProject());
-        investProjectTableView.refresh();
+        if (((InvestProjectDialogController)loader.getController()).getInvestProject() != null) {
+            investProjectTableView.getItems().add(((InvestProjectDialogController) loader.getController()).getInvestProject());
+            investProjectTableView.refresh();
+        }
     }
 
     public void dialogEditInvestProject() throws IOException{
@@ -370,9 +399,8 @@ public class InvestProjectFormController {
         Scene scene = new Scene(root);
         InvestProject investProject = investProjectTableView.getSelectionModel().getSelectedItem();
         int index = investProjectTableView.getItems().indexOf(investProject);
-        //((InvestProjectDialogController)loader.getController()).setInvestProject(investProjectTableView.getSelectionModel().getSelectedItem());
+        ((StageProjectDialogController)loader.getController()).setIdProject(investProject.getIdProject());
         stage.setScene(scene);
-        //((InvestProjectDialogController)loader.getController()).setUserData(investProjectTableView.getSelectionModel().getSelectedItem());
         stage.setTitle("Добавление нового этапа");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initStyle(StageStyle.DECORATED);
@@ -383,15 +411,56 @@ public class InvestProjectFormController {
         investProjectTableView.refresh();
     }
 
-    public void dialogAddSubStage(){
-
+    public void dialogAddSubStage() throws IOException{
+        stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/ru/medyannikov/view/stageProjectDialog.fxml"));
+        Parent root = (Parent) loader.load();
+        Scene scene = new Scene(root);
+        StageProject stageProject = stageProjectTreeTableView.getSelectionModel().getSelectedItem().getValue();
+        int index = stageProjectTreeTableView.getRoot().getChildren().indexOf(stageProject);
+        ((StageProjectDialogController)loader.getController()).setStageProject(stageProject);
+        ((StageProjectDialogController)loader.getController()).setAddSubStage(true);
+        stage.setScene(scene);
+        stage.setTitle("Изменение этапа");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setResizable(false);
+        stage.initOwner(investProjectTableView.getScene().getWindow());
+        stage.showAndWait();
+        stageProjectTreeTableView.refresh();
     }
 
-    public void dialogEditStage(){
-
+    public void dialogEditStage() throws IOException{
+        stage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/ru/medyannikov/view/stageProjectDialog.fxml"));
+        Parent root = (Parent) loader.load();
+        Scene scene = new Scene(root);
+        StageProject stageProject = stageProjectTreeTableView.getSelectionModel().getSelectedItem().getValue();
+        int index = stageProjectTreeTableView.getRoot().getChildren().indexOf(stageProject);
+        ((StageProjectDialogController)loader.getController()).setStageProject(stageProject);
+        stage.setScene(scene);
+        stage.setTitle("Изменение этапа");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setResizable(false);
+        stage.initOwner(investProjectTableView.getScene().getWindow());
+        stage.showAndWait();
+        stageProjectTreeTableView.refresh();
     }
 
     public void dialogDeleteStage(){
-
+        Alert alert = new Alert(Alert.AlertType.NONE, "Вы действительно хотите удалить этап и все подэтапы ?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(new Consumer<ButtonType>() {
+            @Override
+            public void accept(ButtonType buttonType) {
+                if (buttonType == ButtonType.YES){
+                    StageProjectDAO stageProjectDAO = new StageProjectDAO();
+                    StageProject stageProject = stageProjectTreeTableView.getSelectionModel().getSelectedItem().getValue();
+                    stageProjectDAO.delete(stageProject);
+                }
+            }
+        });
     }
 }

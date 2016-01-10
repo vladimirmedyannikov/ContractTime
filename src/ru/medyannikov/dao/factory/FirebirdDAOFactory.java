@@ -1,7 +1,10 @@
 package ru.medyannikov.dao.factory;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import ru.medyannikov.dao.*;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -34,12 +37,19 @@ public class FirebirdDAOFactory extends DAOFactory {
     public Connection getConnection() throws DAOException {
         Connection connection = null;
         try {
+            String path = new File(DAOFactory.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getAbsoluteFile().getParentFile().toString();
+            BufferedReader br = new BufferedReader(new FileReader(path + "\\conf.ini"));
+            //new Alert(Alert.AlertType.NONE, path, ButtonType.OK).show();
+            String url = br.readLine();
+            String login = br.readLine();
+            String password = br.readLine();
+
             Class.forName("org.firebirdsql.jdbc.FBDriver").newInstance();
             connection = DriverManager.getConnection(
-                    "jdbc:firebirdsql://192.168.0.105:3050/ContractTime?lc_ctype=WIN1251",
-                    "SYSDBA", "masterkey");
+                    url, login, password);
         }
         catch (Exception e){
+            new Alert(Alert.AlertType.NONE, e.getMessage(), ButtonType.OK).show();
             throw new DAOException("Connection", e);
         }
         return connection;

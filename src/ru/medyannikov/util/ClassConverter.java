@@ -1,9 +1,6 @@
 package ru.medyannikov.util;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Date;
 
 /**
@@ -14,5 +11,9 @@ public abstract class ClassConverter {
     public static LocalDate convertToLocalDate(Date date){
         Instant instant = Instant.ofEpochMilli(date.getTime());
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public static Date convertToDate(ZonedDateTime date){
+        return new Date().from(Instant.from(date));
     }
 }

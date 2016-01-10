@@ -23,8 +23,43 @@ public class StageProjectDAO implements DAO<StageProject> {
     }
 
     @Override
-    public StageProject insert(StageProject stageProject) {
-        return null;
+    public StageProject insert(StageProject stageProject) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        //Insert into stage_project (id_stage, id_project, name_stage, id_user, date_begin_plan, date_end_plan, id_stage_parent)
+        String sql = "execute procedure insert_stage_project (?, ?, ?, ?, ?, ?);";
+        try
+        {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1,stageProject.getNameStage());
+            statement.setInt(2, stageProject.getUser().getId());
+            statement.setDate(3, new java.sql.Date(stageProject.getDateBeginPlan().getTime()));
+            statement.setDate(4, new java.sql.Date(stageProject.getDateEndPlan().getTime()));
+            statement.setInt(5, stageProject.getIdProject());
+            statement.setInt(6, stageProject.getIdParentStage());
+
+            statement.execute();
+            resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+            if (resultSet != null){
+                stageProject.setIdStage(resultSet.getInt("id_stage"));
+            }
+
+        }catch (Exception e){
+            throw new DAOException("Insert Invest Project", e);
+        }
+        finally {
+            try{
+                if (resultSet != null) resultSet.close();
+                if (statement != null)statement.close();
+                if (connection != null)connection.close();
+            }catch (SQLException e){
+                //throw new DAOException("InvestProject getAll SQL",e);
+            }
+        }
+        return stageProject;
     }
 
     @Override
@@ -33,7 +68,39 @@ public class StageProjectDAO implements DAO<StageProject> {
     }
 
     @Override
-    public void update(StageProject stageProject) {
+    public void update(StageProject stageProject) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String sql = "update stage_project set name_stage = ?, id_user = ?," +
+                "date_begin_plan = ?, date_end_plan =?,  id_stage_parent =? " +
+                " where id_stage = ?;";
+        try
+        {
+            connection = daoFactory.getConnection();
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, stageProject.getNameStage());
+            statement.setInt(2, stageProject.getUser().getId());
+            statement.setDate(3, new java.sql.Date(stageProject.getDateBeginPlan().getTime()));
+            statement.setDate(4, new java.sql.Date(stageProject.getDateEndPlan().getTime()));
+            statement.setInt(5, stageProject.getIdParentStage());
+            statement.setInt(6, stageProject.getIdStage());
+            statement.execute();
+            /*resultSet = statement.getGeneratedKeys();
+            resultSet.next();*/
+
+        }catch (Exception e){
+            throw new DAOException("Insert Invest Project", e);
+        }
+        finally {
+            try{
+                if (resultSet != null) resultSet.close();
+                if (statement != null)statement.close();
+                if (connection != null)connection.close();
+            }catch (SQLException e){
+                //throw new DAOException("InvestProject getAll SQL",e);
+            }
+        }
 
     }
 
